@@ -1,0 +1,42 @@
+﻿Установка:
+
+1. Добавить свой логотип в папку \upload\images\logo.png (желательно не больше чем 150x150);
+2. В браузере ввести http://название сайта/install.php, заполнить название домена и настройки для подключения к вашей базе данных
+
+	должно отобрызиться:
+
+	Создаем таблицы в базе данных...OK
+	Добавляем первоначальные данные в созданные таблицы...OK
+	Удаляем установщик...OK
+	Готово!
+	Перейти на сайт |  Система администрирования
+
+Дополнительно:
+0. в файле .htaccess пописываем полный путь к файлу 404.php
+1. Даем права 775 на папку /upload/ и все подпапки в ней;
+2. Даем права 775 на папку /admin/js/kcfinder/upload и все подпапки в ней;
+3. Идем в /admin/js/ckeditor/config.js и прописывам правильный url:
+
+	CKEDITOR.editorConfig = function(config) {
+	   config.filebrowserBrowseUrl = 'http://название сайта/admin/js/kcfinder/browse.php?type=files';
+	   config.filebrowserImageBrowseUrl = 'http://название сайта/admin/js/kcfinder/browse.php?type=images';
+	   config.filebrowserFlashBrowseUrl = 'http://название сайта/admin/js/kcfinder/browse.php?type=flash';
+	   config.filebrowserUploadUrl = 'http://название сайта/admin/js/kcfinder/upload.php?type=files';
+	   config.filebrowserImageUploadUrl = 'http://название сайта/admin/js/kcfinder/upload.php?type=images';
+	   config.filebrowserFlashUploadUrl = 'http://название сайта/admin/js/kcfinder/upload.php?type=flash';
+	};
+
+4. Идем в /admin/js/kcfinder/config.php и прописываем  путь:
+
+	'uploadURL' => "http://название сайта/upload",
+
+5. Закрыть и открыть браузер;
+6. Идем в панель управления по адресу http://название сайта/admin
+
+    Логин: admin
+    Пароль: 5555555
+
+7. Попробуем загрузить картинку выбрав "Список страниц", потом "Главная". Где поле "текст страницы" нажать
+   на панели инструментов иконку с изображением домика "Изображение", потом "Выбор на сервере", "Загрузить"
+   и выбрать любую картинку на компьютере. Два раза щелкнуть по ней, "ок", "Сохранить".
+8. Проверьте главную страницу сайта.

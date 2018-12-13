@@ -1,0 +1,24 @@
+/* Установщик*/
+#parent {
+    margin:15% auto;
+    float:none;
+    display: table;
+    width:25%;
+    background:#e0e0e0;
+    height:60px;
+    border-radius: 10px;
+}
+
+#child {
+    display: table-cell;
+    vertical-align: middle;
+    text-align:center;
+}
+
+#child input{
+    margin:5px;
+}
+
+#child button{
+    margin:10px;
+}
