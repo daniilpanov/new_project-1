@@ -241,9 +241,27 @@ function create_db_settings_file($file_path, $contents){
 define('MYNAME', 'app/classes/Config.php');
 define('MYNAME2', 'admin/app/classes/Config.php');
 
+// Содержимое с настройками php
+$htaccess = "AddDefaultCharset UTF-8
+
+#Если страница не существует
+ErrorDocument 404 {$domain_name}/404.php
+
+#Отключаем magic_quotes_gpc
+php_flag magic_quotes_gpc Off
+php_flag magic_quotes_runtime Off
+php_value register_globals Off
+
+#Отключаем сообщения типа warning и notice
+php_value error_reporting 1
+
+#Включаем поддержку коротких тегов
+php_flag short_open_tag on";
+
 // создадим эти файлы
 create_db_settings_file(MYNAME, $file_contents);
 create_db_settings_file(MYNAME2, $file_contents);
+create_db_settings_file(".htaccess", $htaccess);
 
 
 // ПОДГОТОВИМ ЗАПРОСЫ ДЛЯ СОЗДАНИЯ НОВЫХ ТАБЛИЦ:
@@ -387,10 +405,10 @@ $dt = time(); // текущая метка времени
                 VALUES(:id, :lng, :icon, :icon_size, :menu_number, :name, :pos, :vis, :vis_in_main, :vis_in_sidebar, :content, :created, :title, :link, :rev_vis, :rev_add, :contacts_vis)";
     
     $add_page_2 = /** @lang MySQL */ "INSERT INTO
-                pages(id, parent_id, language, menu_number, menu_name, position, visible,
+                pages(id, parent_id, language, menu_number, menu_icon, icon_size, menu_name, position, visible,
                  visible_in_main_menu, visible_in_sidebar, content, created,
                   title, active_link_in_sidebar, reviews_visible, reviews_add, contacts_visible)
-                VALUES(:id, :parent_id, :lng, :menu_number, :name, :pos, :vis, :vis_in_main, :vis_in_sidebar, :content, :created, :title, :link, :rev_vis, :rev_add, :contacts_vis)";
+                VALUES(:id, :parent_id, :lng, :menu_number, :menu_icon, :icon_size, :name, :pos, :vis, :vis_in_main, :vis_in_sidebar, :content, :created, :title, :link, :rev_vis, :rev_add, :contacts_vis)";
 
     // reviews
     $add_review = /** @lang MySQL */ "INSERT INTO
@@ -457,7 +475,7 @@ if(
     )
     && $mydbobj->sql(
             $add_page_1,
-            ['id' => '5', 'lng' => 'ru', 'icon' => '', 'icon_size' => '',
+            ['id' => '5', 'lng' => 'ru', 'icon' => 'icon-comments', 'icon_size' => 'icon-large',
                 'menu_number' => '0', 'name' => 'Отзывы', 'pos' => '5', 'vis' => '1',
                 'vis_in_main' => '1', 'vis_in_sidebar' => '0', 'content' => '',
                 'created' => $dt, 'title' => 'адрес сайта | Ключевое слово | Отзывы', 'link' => '1',
@@ -465,7 +483,7 @@ if(
     )
     && $mydbobj->sql(
         $add_page_1,
-        ['id' => '6', 'lng' => 'ru', 'icon' => '', 'icon_size' => '',
+        ['id' => '6', 'lng' => 'ru', 'icon' => 'icon-envelope', 'icon_size' => 'icon-large',
             'menu_number' => '0', 'name' => 'Контакты', 'pos' => '6', 'vis' => '1',
             'vis_in_main' => '1', 'vis_in_sidebar' => '0', 'content' => '',
             'created' => $dt, 'title' => 'адрес сайта | Ключевое слово | Контакты', 'link' => '1',
@@ -473,7 +491,7 @@ if(
     )
     && $mydbobj->sql(
         $add_page_1,
-        ['id' => '7', 'lng' => 'en', 'icon' => '', 'icon_size' => '',
+        ['id' => '7', 'lng' => 'en', 'icon' => 'icon-comments', 'icon_size' => 'icon-large',
             'menu_number' => '0', 'name' => 'Reviews', 'pos' => '6', 'vis' => '1',
             'vis_in_main' => '1', 'vis_in_sidebar' => '0', 'content' => '',
             'created' => $dt, 'title' => 'site address | Keyword | Reviews', 'link' => '1',
@@ -481,7 +499,7 @@ if(
     )
     && $mydbobj->sql(
         $add_page_1,
-        ['id' => '8', 'lng' => 'en', 'icon' => '', 'icon_size' => '',
+        ['id' => '8', 'lng' => 'en', 'icon' => 'icon-envelope', 'icon_size' => 'icon-large',
             'menu_number' => '0', 'name' => 'Contacts', 'pos' => '7', 'vis' => '1',
             'vis_in_main' => '1', 'vis_in_sidebar' => '0', 'content' => '',
             'created' => $dt, 'title' => 'site address | Keyword | Contacts', 'link' => '1',
@@ -490,6 +508,7 @@ if(
     && $mydbobj->sql(
             $add_page_2,
             ['id' => '3', 'parent_id' => '1', 'lng' => 'ru', 'menu_number' => '1',
+                'icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
                 'name' => 'Пример страницы', 'pos' => '2', 'vis' => '1',
                 'vis_in_main' => '0', 'vis_in_sidebar' => '1', 'content' => 'Пример страницы',
                 'created' => $dt, 'title' => 'адрес сайта | Ключевое слово | Пример страницы',
@@ -498,6 +517,7 @@ if(
     && $mydbobj->sql(
             $add_page_2,
             ['id' => '4', 'parent_id' => '2', 'lng' => 'en', 'menu_number' => '2',
+                'icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
                 'name' => 'Example page', 'pos' => '4', 'vis' => '1',
                 'vis_in_main' => '0', 'vis_in_sidebar' => '1', 'content' => 'Example page',
                 'created' => $dt, 'title' => 'site address | Keyword | Example page',
