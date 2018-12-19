@@ -6,8 +6,9 @@
  * @copyright 01.04.2014
  * @updated 28.12.2017
  */
-
 session_start();
+ini_set("error_reporting", "1");
+
 
 // автозагрузка классов
 spl_autoload_register(function ($name)
@@ -508,7 +509,7 @@ if(
     && $mydbobj->sql(
             $add_page_2,
             ['id' => '3', 'parent_id' => '1', 'lng' => 'ru', 'menu_number' => '1',
-                'icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
+                'menu_icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
                 'name' => 'Пример страницы', 'pos' => '2', 'vis' => '1',
                 'vis_in_main' => '0', 'vis_in_sidebar' => '1', 'content' => 'Пример страницы',
                 'created' => $dt, 'title' => 'адрес сайта | Ключевое слово | Пример страницы',
@@ -517,7 +518,7 @@ if(
     && $mydbobj->sql(
             $add_page_2,
             ['id' => '4', 'parent_id' => '2', 'lng' => 'en', 'menu_number' => '2',
-                'icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
+                'menu_icon' => 'icon-briefcase', 'icon_size' => 'icon-large',
                 'name' => 'Example page', 'pos' => '4', 'vis' => '1',
                 'vis_in_main' => '0', 'vis_in_sidebar' => '1', 'content' => 'Example page',
                 'created' => $dt, 'title' => 'site address | Keyword | Example page',

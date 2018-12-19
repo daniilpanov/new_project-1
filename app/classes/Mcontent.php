@@ -22,7 +22,7 @@ class Mcontent
 			}
         }
         $sql = /** @lang MySQL */
-            "SELECT content, description, keywords, title, created, reviews_visible, reviews_add, contacts_visible FROM pages WHERE id = :id AND visible = :visible LIMIT 1";
+            "SELECT * FROM pages WHERE id = :id AND visible = :visible LIMIT 1";
 
         $res = Db::getInstance()->sql($sql, array("id" => $id, "visible" => "1"));// выполняем запрос
         return $res;

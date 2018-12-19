@@ -6,7 +6,7 @@ class McreateEdit
 	// возвращает список всех страниц 
 	function retr ()
 	{ 
-        $sql = "SELECT id, position, menu_name, language FROM pages ORDER BY position ASC";
+        $sql = /** @lang MySQL */ "SELECT id, position, menu_name, language FROM pages ORDER BY position ASC";
         $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
         return $res; // возвращаем результат
     }
@@ -14,7 +14,7 @@ class McreateEdit
 	// возвращает список всех языков
 	function language_list($exclude)
 	{ 
-        $sql = "SELECT * FROM languages WHERE language <> '{$exclude}'";
+        $sql = /** @lang MySQL */ "SELECT * FROM languages WHERE language <> '{$exclude}'";
         $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
         return $res; // возвращаем результат
     }
@@ -22,7 +22,7 @@ class McreateEdit
 	// возвращает список всех меню
 	function menu_list($exclude,$lng)
 	{ 
-        $sql = "SELECT * FROM menus WHERE id <> '{$exclude}' AND language = '{$lng}'";
+        $sql = /** @lang MySQL */ "SELECT * FROM menus WHERE id <> '{$exclude}' AND language = '{$lng}'";
         $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
         return $res; // возвращаем результат
     }
@@ -52,7 +52,7 @@ class McreateEdit
     // возвращает выбранную страницу для редактирования
     function retr_pageedit($id)
 	{ 
-        $sql = 'SELECT parent_id,description,keywords,language,title,menu_icon,icon_size,menu_number,menu_name,position,visible,visible_in_main_menu,visible_in_sidebar,active_link_in_sidebar,reviews_visible,reviews_add,content,visible FROM pages WHERE id = '.$id.'';
+        $sql = /** @lang MySQL */ 'SELECT * FROM pages WHERE id = '.$id.'';
         $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
         return $res; // возвращаем результат
     }

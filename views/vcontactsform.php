@@ -35,13 +35,21 @@
                 </label>
             </p>
 
-            <p>
-                <label>
-                    <?=ATTACHFILE?>
-                    <br>
-                    <input class="form-control" type="file" name="attach[]" multiple />
-                </label>
-            </p>
+            <?php
+            // подключаем контакты
+            if ($page['contacts_files_attach'])
+            {
+                ?>
+                <p>
+                    <label>
+                        <?=ATTACHFILE?>
+                        <br>
+                        <input class="form-control" type="file" name="attach[]" multiple />
+                    </label>
+                </p>
+                <?php
+            }
+            ?>
 
             <p class="form-group">
                 <button class="btn btn-danger" type="reset" name="reset"><?=CLEAR?></button>
