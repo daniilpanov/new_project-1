@@ -34,15 +34,15 @@
                     <textarea class="form-control" name="mess" rows="10" cols="45"></textarea>
                 </label>
             </p>
-<!--
+
             <p>
                 <label>
-                    <?/*=ATTACHFILE*/?>
+                    <?=ATTACHFILE?>
                     <br>
                     <input class="form-control" type="file" name="attach[]" multiple />
                 </label>
             </p>
--->
+
             <p class="form-group">
                 <button class="btn btn-danger" type="reset" name="reset"><?=CLEAR?></button>
                 <button class="btn btn-success" type="submit" name="mail_submit"><?=SEND?></button>

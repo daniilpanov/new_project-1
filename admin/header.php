@@ -8,7 +8,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<meta name="Author" content="<Клуб интеллектуалов" />
+    	<meta name="Author" content="Клуб интеллектуалов" />
 		<!--End Meta-->
 		
 		<title>Система управления сайтом</title>
@@ -32,7 +32,6 @@
 		<script type="text/javascript" src="js/jquery/jquery-1.7.2.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery.lightbox-0.5.js"></script>
 		<script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
-		<script type="text/javascript" src="js/Djenx.Explorer/djenx-explorer.js"></script>
 		<!--End Java scripts-->
 		
 		<!--bootstrap-->

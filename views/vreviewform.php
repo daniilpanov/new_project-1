@@ -21,8 +21,7 @@
                 <label title="" for="star-0"></label>
             </p>
 
-            <hr>
-
+            <br />
             <br /> <br />
             <br /> <br />
 
