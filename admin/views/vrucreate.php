@@ -146,6 +146,22 @@ $all_menus = $editpage->print_menu_list("","ru");
             </select>
         </td>
     </tr>
+    <tr>
+        <td>форма обратной связи: </td>
+        <td><select name = "contacts_visible" class="select">
+                <option value = "1" <?php if($page['contacts_visible']== 1){echo "selected";}?>>отображать</option>
+                <option value = "0" <?php if($page['contacts_visible']== 0){echo "selected";}?>>скрыть</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>форма обратной связи (файлы): </td>
+        <td><select name = "contacts_files_attach" class="select">
+                <option value = "1" <?php if($page['contacts_files_attach']== 1){echo "selected";}?>>прикреплять</option>
+                <option value = "0" <?php if($page['contacts_files_attach']== 0){echo "selected";}?>>не прикреплять</option>
+            </select>
+        </td>
+    </tr>
 	<tr>
 		<td>текст страницы:<td>
 	</tr>
