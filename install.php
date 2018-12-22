@@ -9,7 +9,6 @@
 session_start();
 ini_set("error_reporting", "1");
 
-
 // автозагрузка классов
 spl_autoload_register(function ($name)
 {
@@ -27,6 +26,7 @@ if ($_POST)
     $_SESSION['db_user_name'] = $_POST['db_user_name'];
     $_SESSION['db_user_password'] = $_POST['db_user_password'];
     $_SESSION['admin_login'] = $_POST['admin_login'];
+    $ok = true;
 }
 
 ?>
@@ -220,15 +220,8 @@ class Config
 }";
 
 // напишем функцию для создания файла
-function create_db_settings_file($file_path, $contents){
-    if (!file_exists($file_path))
-    {
-        $handle = fopen($file_path, "w");
-        fwrite($handle, "");
-
-        fclose($handle);
-    }
-
+function create_db_settings_file($file_path, $contents)
+{
     if (filesize($file_path)==0)
     {
         $handle = fopen($file_path, "w");
@@ -328,7 +321,8 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `active_link_in_sidebar` enum('0','1') NOT NULL,
   `reviews_visible` enum('0','1') NOT NULL,
   `reviews_add` enum('0','1') NOT NULL,
-  `contacts_visible` enum('0','1') DEFAULT NULL,
+  `contacts_visible` enum('0','1') NOT NULL,
+  `contacts_files_attach` enum('0', '1') NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
 
@@ -377,6 +371,7 @@ if (
 else
 {
     echo "<div class='col-md-2'>Ошибка при создании таблиц</div></div>";
+    $ok = false;
 }
 
 // подготовим дампы данных созданных таблиц
@@ -552,7 +547,8 @@ if(
 }
 else
 {
-    die("<div class='col-md-2'>Ошибка при добавлении первоначальных данных</div></div>");
+    echo "<div class='col-md-2'>Ошибка при добавлении первоначальных данных</div></div>";
+    $ok = false;
 }
 
 // удаляем установщик для предотвращения повторного добавления первоначальных данных
@@ -570,6 +566,10 @@ echo "<div class='row'>
 // Удаляем файлы установщика:
 unlink('app/classes/Login.php');
 /*unlink('Установка.txt');
-unlink('style/install.css');
-unlink('install.php');*/
+unlink('style/install.css');*/
+if ($ok)
+{
+    rename('install.php', 'admin/install.php');
+}
+
 ?>

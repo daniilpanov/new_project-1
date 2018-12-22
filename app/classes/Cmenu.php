@@ -27,34 +27,43 @@ class Cmenu extends Mmenu
     public function printItem($item, $items, $childrens){
     
 		echo '<li class="dropdown">';
-		echo "<a class=\"dropdown-toggle\" data-target=\"#\" href=\"".DOMAINNAME."/?id=$item[id]&review=1\"><i class=\"$item[menu_icon] $item[icon_size]\"> </i> $item[menu_name]</a>";
+		echo "<a class=\"dropdown-toggle\" data-target=\"#\" href=\"".DOMAINNAME."/?id=$item[id]&review=1\">
+                <i class=\"$item[menu_icon] $item[icon_size]\"> </i>
+                 $item[menu_name]";
 		
 		// Выводились ли дочерние элементы?
 		$ul = false;
 		
 		//Бесконечный цикл, в котором мы ищем все дочерние элементы
-		while (true) {
-			
-		  // Ищем в массиве $childrens елементы которые принадлежат родителю
-		  $key = array_search($item["id"], $childrens); // если нет - вылетаем с цикла while
-		  
-		  // Если дочерних элементов не найдено 
-		  if (!$key) {
-			// Если выводились дочерние элементы, то закрываем список
-			if ($ul) echo "</ul>"; 
-			break; // Выходим из цикла
-		  }
-		  
-		  // Удаляем найденный элемент (чтобы он не выводился ещё раз)
-		  unset($childrens[$key]); 
-		  
-		  if (!$ul) {
-			echo '<ul class="dropdown-menu parent">'; // Начинаем внутренний список, если дочерних элементов ещё не было
-			$ul = true; // Устанавливаем флаг
-		  }
-		  
-		  // Рекурсивно выводим все дочерние элементы
-		  echo self::printItem($items[$key], $items, $childrens); 
+		while (true)
+        {
+            // Ищем в массиве $childrens елементы которые принадлежат родителю
+            $key = array_search($item["id"], $childrens); // если нет - вылетаем с цикла while
+
+            // Если дочерних элементов не найдено
+            if (!$key)
+            {
+                // Если выводились дочерние элементы, то закрываем список
+                if ($ul) echo "</ul>";
+                break; // Выходим из цикла
+            }
+            else
+            {
+                echo "&emsp;<i class='caret'></i>";
+            }
+            echo "</a>";
+
+            // Удаляем найденный элемент (чтобы он не выводился ещё раз)
+            unset($childrens[$key]);
+
+            if (!$ul)
+            {
+                echo '<ul class="dropdown-menu parent">'; // Начинаем внутренний список, если дочерних элементов ещё не было
+                $ul = true; // Устанавливаем флаг
+            }
+
+            // Рекурсивно выводим все дочерние элементы
+            echo self::printItem($items[$key], $items, $childrens);
 		}
 		echo "</li>";
   }  
