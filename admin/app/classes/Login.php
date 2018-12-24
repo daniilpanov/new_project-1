@@ -30,7 +30,7 @@ class Login
 	
     function return_authorisation()
 	{
-        $sql = "SELECT * FROM users WHERE id=1";
+        $sql = /** @lang MySQL */ "SELECT * FROM users WHERE id=1";
         $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
         return $res; // возвращаем результат
     }
