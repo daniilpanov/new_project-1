@@ -35,13 +35,8 @@
         // Если данные пришли с формы
         if($_POST)
         {
-			
 			// добавляем запись о новом меню в БД
-        	if($_GET['menu'] == "rucreate")
-        	{
-                $allmenus->post_data($_POST);
-            }
-			elseif($_GET['menu'] == "encreate")
+        	if($_GET['menu'] == "rucreate" || $_GET['menu'] == "encreate")
         	{
                 $allmenus->post_data($_POST);
             }

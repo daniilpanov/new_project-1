@@ -133,6 +133,7 @@ class Uninstall
             if (!unlink(self::CONFIG)
                 || !unlink("../".self::CONFIG)
                 || !unlink("../.htaccess")
+                || !unlink("../logs.txt")
             )
             {
                 $this->error .= "<br />Файлы не удалены!";

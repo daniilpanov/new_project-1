@@ -29,7 +29,7 @@ class Cmenu extends Mmenu
         $this->pos_inc($aux_post['position']);
 
 		// отправляем информацию в базу
-		$this->create($aux_post) ;
+		$this->create($aux_post);
     }
 	
 	// возвращает список всех меню (id-массив с данными)
@@ -37,11 +37,7 @@ class Cmenu extends Mmenu
 	{
         // получаем список всех меню
 		$list = $this->menu_pos($lng);
-        while ($row = mysqli_fetch_assoc($list))
-		{
-            // помещаем результат в многомерный массив
-			$m [$row['id']] = $row;
-        }
+        $m = $list->fetchAll();
         return $m;
     }
 
@@ -58,7 +54,7 @@ class Cmenu extends Mmenu
 	{
 		// получаем список всех меню
         $res = $this->menu_pos($lng);
-        while ($row = mysqli_fetch_assoc($res))
+        while ($row = $res->fetch())
 		{
             // заносим в новый массив
 			$menu[$row['menu_name']] = $row['position'];

@@ -17,6 +17,12 @@ spl_autoload_register(function ($name)
 
     require_once($name.'.php');
 });
+
+if (file_exists("logs.txt"))
+{
+    header("Location: " . str_replace("/install.php", "", $_SERVER['PHP_SELF']));
+}
+
 if ($_POST)
 {
     $_SESSION['domain_name'] = $_POST['domain_name'];
@@ -220,7 +226,7 @@ $file_contents .= "\"; // название БД
 }";
 
 // напишем функцию для создания файла
-function create_db_settings_file($file_path, $contents)
+function create_settings_file($file_path, $contents)
 {
     if (filesize($file_path)==0)
     {
@@ -250,15 +256,12 @@ php_value register_globals Off
 php_value error_reporting 1
 
 #Включаем поддержку коротких тегов
-php_flag short_open_tag on
-
-#Переадресация с install.php (чтобы никто не смог переустановить)
-Redirect /install.php {$domain_name}";
+php_flag short_open_tag on";
 
 // создадим эти файлы
-create_db_settings_file(MYNAME, $file_contents);
-create_db_settings_file(MYNAME2, $file_contents);
-create_db_settings_file(".htaccess", $htaccess);
+create_settings_file(MYNAME, $file_contents);
+create_settings_file(MYNAME2, $file_contents);
+create_settings_file(".htaccess", $htaccess);
 
 
 // ПОДГОТОВИМ ЗАПРОСЫ ДЛЯ СОЗДАНИЯ НОВЫХ ТАБЛИЦ:
@@ -568,10 +571,9 @@ echo "<div class='row'>
 // !!!РАЗКОММЕНТИРУЙТЕ НА PRODUCTION!!!
 // Удаляем файлы установщика:
 unlink('app/classes/Login.php');
-/*unlink('Установка.txt');
-unlink('style/install.css');
+/*unlink('Установка.txt');*/
 if ($ok)
 {
-    rename('install.php', 'admin/install.php');
-}*/
+    create_settings_file("logs.txt", "Установка прошла успешно! \r\n");
+}
 ?>

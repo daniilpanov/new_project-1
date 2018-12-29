@@ -3,66 +3,183 @@ namespace app\classes;
 
 /**
  * @filename DB.php
- * набор компонентов для работы с БД (Singleton)
+ * набор компонентов для работы с БД (PDO Singleton)
  * @author Любомир Пона
  * @copyright 24.09.2013
- * @updated 25.12.2017
+ * @updated 29.09.2018
  */
 
 class Db extends Config
 {
-    private static $instance = null; // объект для работы с БД
-    private static $handler; // идентефикатор соединения
+    /**
+     * @var $DBH \PDO
+     * идентефикатор соединения,
+     * @var $DSN string
+     * для подключения к БД.
+    ---------------------------
+     * @var $OPT array
+     * дополнительные параметры.
+     */
+    private static
+        $DBH = NULL,
+        $DSN = "mysql:host=".self::DB_HOST.";dbname=".self::DB_NAME.";charset=".self::SQLCHARSET,
 
-    // закрываем возможность создания и дублирования объектов
-    private function  __construct()
+        $OPT = [
+        \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+    ];
+
+    // Используем паттерн Singleton
+    use Singleton;
+
+    // При создании объекта вызываем метод open_connection
+    private function __construct()
     {
         $this->open_connection();
-    }
-    private function __clone(){}
-    private function __wakeup(){}
-
-    // объект для бароты с БД
-    public static function getInstance()
-    {
-        if (self::$instance === null)
-        {
-           self::$instance = new self;
-        }
-
-        return self::$instance;
-
     }
 
     // соединяемся с БД
     private function open_connection()
     {
-        self::$handler = mysqli_connect(self::DB_HOST, self::DB_USER, self::DB_PASS, self::DB_NAME);
-
-        // если соединение не открыто, выдаем сообщение об ошибке
-        if (!self::$handler)
+        try
         {
-            die("Ошибка соединения с базой данных: ". mysqli_error());
+            self::$DBH = new \PDO(self::$DSN, self::DB_USER, self::DB_PASS, self::$OPT);
+            $STH = self::$DBH->query("SET NAMES utf8");
         }
-
-        // установка принудительной кодировки UTF-8
-        mysqli_query(self::$handler, "set names utf8") or die ("set names utf8 failed");
+        catch(\PDOException $e)
+        {
+            echo "Извините, но операция подключения к БД не может быть выполнена";
+            $error = date("j.m.Y \a\\t G:i:s") . "\n".
+                $e->getMessage() . "\n\n";
+            file_put_contents('logs.txt', $error,FILE_APPEND);
+        }
     }
 
     // реализация запроса к БД
-    public function sql($query)
+    public function sql(string $query, array $params = NULL, bool $emulate = TRUE) : \PDOStatement
     {
-        $result = mysqli_query(self::$handler, $query);
-
-        // если запрос не удался, выдаем сообщение об ошибке
-        if (!$result)
+        echo $query;
+        try
         {
-            die ("Ошибка запроса к базе данных: ". mysqli_error());
+            // если вместе с запросом был передан массив с данными
+            if ($params !== NULL)
+            {
+                $STH = self::$DBH->prepare($query);
+
+                self::$DBH->setAttribute(\PDO::ATTR_EMULATE_PREPARES, $emulate);
+                $STH->execute($params);
+            }
+            else
+            {
+                $STH = self::$DBH->query($query);
+            }
+        }
+        catch(\PDOException $e)
+        {
+            switch ($_SESSION['language'])
+            {
+                case 'ru':
+                    echo "<b>Извините</b>, но операция <i>не может быть выполнена</i>";
+                    break;
+                case 'en':
+                    echo "<b>Sorry</b>, but the operation <i>can't be done</i>";
+                    break;
+            }
+
+            $error = date("j.m.Y \a\\t G:i:s") . "\n".
+                $e->getMessage() . "\n\n";
+
+            // пишем все ошибки в файл с логами
+            file_put_contents('logs.txt', $error, FILE_APPEND);
         }
 
-        return $result;
+        return $STH;
+    }
+
+
+    // CRUD methods
+    // получение
+    public function read($query, $values = NULL)
+    {
+        // если вместе с запросом был передан массив с данными
+        $STH = $this->sql($query, $values);
+        return $STH;
+    }
+    // добавление
+    public function create ($table, $data, $timestamps=false)
+    {
+        $sql = "INSERT INTO {$table} (";
+        foreach ($data as $k=>$v)
+        {
+            $sql.= "{$k}, ";
+        }
+
+        if ($timestamps)
+        {
+
+            $sql .= 'created, ';
+        }
+
+        $sql = substr($sql,0,-2);
+
+        $sql .=") VALUES (";
+
+        foreach ($data as $k=>$v)
+        {
+            $sql.= ":{$k}, ";
+        }
+
+        if ($timestamps)
+        {
+
+            $sql .= ':created, ';
+            $data['created'] = time();
+        }
+
+        $sql = substr($sql,0,-2);
+
+        $sql .=")";
+
+        if($this->sql($sql, $data))
+        {
+            echo "Данные были успешно добавлены";
+        }
+    }
+    // обновление
+    public function update($table, $data, $where = NULL, $operator = "=", $emulate = true, $timestamps = false)
+    {
+        $sql = "UPDATE {$table} SET ";
+        foreach ($data as $k=>$v)
+        {
+            $sql.= "{$k}=:{$k}, ";
+        }
+
+        $sql = substr($sql,0,-2);
+
+        if($where)
+        {
+            foreach ($where as $col=>$value)
+            {
+                $sql.= " WHERE {$col}{$operator}'{$value}' AND ";
+            }
+
+            $sql = substr($sql,0,-4);
+        }
+
+        if($this->sql($sql, $data, $emulate))
+        {
+            echo "Данные были успешно обновлены";
+        }
+    }
+    // удаление
+    public function delete($table, $id)
+    {
+        $sql = "DELETE FROM {$table} WHERE id={$id}";
+
+        if($this->sql($sql))
+        {
+            echo "Данные были успешно удалены";
+        }
     }
 
 }
-?>
-

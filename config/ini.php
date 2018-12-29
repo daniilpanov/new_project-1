@@ -13,6 +13,11 @@ spl_autoload_register(function ($name)
     require_once($name.'.php');
 });
 
+if (!file_exists("logs.txt"))
+{
+    header("Location: install.php");
+}
+
 // библиотека функций
 require_once "lib/functions.php";
 

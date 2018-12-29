@@ -51,7 +51,7 @@ class Db extends Config
             echo "Извините, но операция подключения к БД не может быть выполнена";
             $error = date("j.m.Y \a\\t G:i:s") . "\n".
                 $e->getMessage() . "\n\n";
-            file_put_contents('logs/DB_log.txt', $error,FILE_APPEND);
+            file_put_contents('logs.txt', $error,FILE_APPEND);
         }
     }
 
@@ -90,7 +90,7 @@ class Db extends Config
                 $e->getMessage() . "\n\n";
 
             // пишем все ошибки в файл с логами
-            file_put_contents('logs/DB_log.txt', $error, FILE_APPEND);
+            file_put_contents('logs.txt', $error, FILE_APPEND);
         }
 
         return $STH;
