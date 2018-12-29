@@ -36,3 +36,5 @@ $sitesettings = $settings->return_all_settings($lng);
 	<br />
 	<input type="submit"  value="Сохранить">
 </form>
+
+<a href="?uninstall" class="btn btn-danger">Деинсталляция</a>

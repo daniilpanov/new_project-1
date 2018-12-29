@@ -19,14 +19,8 @@
                 </select>
             </td>
         </tr>
-
-
+        <tr>
             <td><a href="?reviewedit="><img title="редактировать" src="image/edit.png" /></a></td>
-
         </tr>
     </table>
 </form>
-
-
-
-

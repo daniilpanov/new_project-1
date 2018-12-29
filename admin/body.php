@@ -22,18 +22,17 @@
 
 <div id="content-container">
 	<div id="content-container2">
-		<div id="content-container3">
-        <?php 
-		
+		<div id="content-container3"><?php
+
 		// создаем новые обьекты
         $vcreateedit = new \app\classes\CcreateEdit(); // для работы со страницами
 		$allmenus = new \app\classes\Cmenu(); // для работы с меню
 		$alllanguages = new \app\classes\Clanguages(); // для работы с языками
 		$settings = new \app\classes\Csettings(); // для работы с настройками сайта
         $reviews = new \app\classes\Creview(); // для работы с отзывами
-		// если от пользователя получены данные из формы
-					
+
         // Маршрутизатор
+        // Если данные пришли с формы
         if($_POST)
         {
 			
@@ -69,7 +68,7 @@
 				{
 					$allmenus->del_menu($value);
 				}
-											
+
 				if($menu['language']=='ru')
 				{
 					require_once "views/vrumenulist.php" ;
@@ -157,149 +156,149 @@
 		} 
 		
 		// если нажата кнопка, подключаем соответствующие виды
-        
-		// список меню
-		elseif($_GET['page'] == "rumenulist") 
+        if ($_GET)
         {
-            require_once "views/vrumenulist.php" ;
-        }
-		elseif($_GET['page'] == "enmenulist") 
-        {
-            require_once "views/venmenulist.php" ;
-        }
-		
-		// создать меню
-		elseif($_GET['menu'] == "rucreate") 
-        {
-            require_once "views/vrumenucreate.php" ;
-        }
-		elseif($_GET['menu'] == "encreate") 
-        {
-            require_once "views/venmenucreate.php" ;
-        }
+            // список меню
+            if($_GET['page'] == "rumenulist")
+            {
+                require_once "views/vrumenulist.php" ;
+            }
+            elseif($_GET['page'] == "enmenulist")
+            {
+                require_once "views/venmenulist.php" ;
+            }
 
-		// редактировать меню
-		elseif($_GET['menuedit'])
-        {
-            require_once "views/vmenuedit.php" ;
-        }	
-		
-		// удалить меню       
-        elseif($_GET['menudelete'])
-        {
-            $id = $_GET['menudelete'];
-			$menu = $allmenus->print_menuedit($id);
-			
-			$allmenus->del_menu($_GET['menudelete']);
-			
-			if($menu['language']=='ru')
-			{
-				require_once "views/vrumenulist.php" ;
-			}
-			elseif($menu['language']=='en')
-			{
-				require_once "views/venmenulist.php" ;
-			}
-			
-        }
-		
-		// список страниц
-        elseif($_GET['page'] == "rulist")
-        {
-            require_once "views/vrulist.php" ;
-        }
-		elseif($_GET['page'] == "enlist")
-        {
-            require_once "views/venlist.php" ;
-        }
-		
-		// создать страницу
-		elseif($_GET['page'] == "rucreate") 
-        {
-            require_once "views/vrucreate.php" ;
-        }
-		elseif($_GET['page'] == "encreate") 
-        {
-            require_once "views/vencreate.php" ;
-        }
-		
-		// редактировать страницу
-		elseif($_GET['edit'])
-        {
-            require_once "views/vedit.php" ;
-        }	
-			
-        // удалить страницу        
-        elseif($_GET['delete'])
-        {
-            $id = $_GET['delete'];
-			$page = $vcreateedit->print_pageedit($id);
-			
-			$vcreateedit->del_page($_GET['delete']);
-			
-			if($page['language']=='ru')
-			{
-				require_once "views/vrulist.php" ;
-			}
-			elseif($page['language']=='en')
-			{
-				require_once "views/venlist.php" ;
-			}
-					
+            // создать меню
+            elseif($_GET['menu'] == "rucreate")
+            {
+                require_once "views/vrumenucreate.php" ;
+            }
+            elseif($_GET['menu'] == "encreate")
+            {
+                require_once "views/venmenucreate.php" ;
+            }
 
-        }
+            // редактировать меню
+            elseif($_GET['menuedit'])
+            {
+                require_once "views/vmenuedit.php" ;
+            }
 
+            // удалить меню
+            elseif($_GET['menudelete'])
+            {
+                $id = $_GET['menudelete'];
+                $menu = $allmenus->print_menuedit($id);
 
-        // список озывов
-        elseif ($_GET['page'] == "rureviews")
-        {
-            require_once "views/vrureviews.php" ;
+                $allmenus->del_menu($_GET['menudelete']);
+
+                if($menu['language']=='ru')
+                {
+                    require_once "views/vrumenulist.php" ;
+                }
+                elseif($menu['language']=='en')
+                {
+                    require_once "views/venmenulist.php" ;
+                }
+
+            }
+
+            // список страниц
+            elseif($_GET['page'] == "rulist")
+            {
+                require_once "views/vrulist.php" ;
+            }
+            elseif($_GET['page'] == "enlist")
+            {
+                require_once "views/venlist.php" ;
+            }
+
+            // создать страницу
+            elseif($_GET['page'] == "rucreate")
+            {
+                require_once "views/vrucreate.php" ;
+            }
+            elseif($_GET['page'] == "encreate")
+            {
+                require_once "views/vencreate.php" ;
+            }
+
+            // редактировать страницу
+            elseif($_GET['edit'])
+            {
+                require_once "views/vedit.php" ;
+            }
+
+            // удалить страницу
+            elseif($_GET['delete'])
+            {
+                $id = $_GET['delete'];
+                $page = $vcreateedit->print_pageedit($id);
+
+                $vcreateedit->del_page($_GET['delete']);
+
+                if($page['language']=='ru')
+                {
+                    require_once "views/vrulist.php" ;
+                }
+                elseif($page['language']=='en')
+                {
+                    require_once "views/venlist.php" ;
+                }
+            }
+
+            // список озывов
+            elseif ($_GET['page'] == "rureviews")
+            {
+                require_once "views/vrureviews.php" ;
+            }
+
+            // список языков
+            elseif($_GET['page'] == "languages")
+            {
+                require_once "views/vlanguages.php" ;
+            }
+
+            // редактировать язык
+            elseif($_GET['languageedit'])
+            {
+                require_once "views/vlanguageedit.php" ;
+            }
+
+            // пользователи
+            elseif($_GET['page'] == "changeauth")
+            {
+                require_once "views/vchangeauth.php" ;
+            }
+
+            // основные настройки сайта
+            elseif($_GET['page'] == "rusettings")
+            {
+                require_once "views/vrusettings.php" ;
+            }
+            elseif($_GET['page'] == "ensettings")
+            {
+                require_once "views/vensettings.php" ;
+            }
+            // Uninstall
+            elseif (isset($_GET['uninstall']))
+            {
+                header("Refresh: 0; URL=uninstall.php");
+            }
+
+            // помощь
+            elseif($_GET['page']== "help")
+            {
+                require_once "views/vhelp.php" ;
+            }
         }
-		
-		// список языков
-		elseif($_GET['page'] == "languages")
-        {
-            require_once "views/vlanguages.php" ;
-        }
-		
-		// редактировать язык
-		elseif($_GET['languageedit'])
-        {
-            require_once "views/vlanguageedit.php" ;
-        }
-		
-		// пользователи
-		elseif($_GET['page'] == "changeauth")
-        {
-            require_once "views/vchangeauth.php" ;
-        }
-		
-		// основные настройки сайта
-		elseif($_GET['page'] == "rusettings")
-        {
-            require_once "views/vrusettings.php" ;
-        }
-		elseif($_GET['page'] == "ensettings")
-        {
-            require_once "views/vensettings.php" ;
-        }
-		
-		// помощь
-		elseif($_GET['page']== "help")
-		{
-			require_once "views/vhelp.php" ;
-		}
-		
-		// выводим контент главной страницы панели администрирования
+        // выводим контент главной страницы панели администрирования
         else
         {
-		
-		
-       $text=<<<HERE
-        <p>Добро пожаловать в панель управления сайтом. Здесь Вы можете добавить, отредактировать или удалить информацию на сайте с помощью соответствующих пунктов верхнего меню пенели управления. Также можно изменить параметры входа в систему управления сайтом.</p>
+            $text=<<<HERE
+                <p>Добро пожаловать в панель управления сайтом. Здесь Вы можете добавить, отредактировать или удалить информацию на сайте с помощью соответствующих пунктов верхнего меню пенели управления. Также можно изменить параметры входа в систему управления сайтом.</p>
 HERE;
-        echo $text;     
-		
+            echo $text;
         }
         ?>
 		</div><!--content-container3-->

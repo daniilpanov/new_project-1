@@ -2,6 +2,11 @@
 session_start();
 ini_set("error_reporting", "1");
 
+if (!isset($_SESSION['login']) || !isset($_SESSION['password']))
+{
+    die();
+}
+
 // автозагрузка классов
 spl_autoload_register(function ($name)
 {
@@ -27,10 +32,12 @@ if (!$_POST['password'])
 else
 {
     $res = $uninstall->checkPassword($_POST['password']);
-
+    // Если пароль правильный
     if ($res)
     {
-        $uninstall->progress++;
+        // Меняем title
+        $uninstall->title_number++;
+        // Удаление таблиц и конф. файлов
         if ($del = $uninstall->delete())
         {
             $header = "
@@ -42,7 +49,6 @@ else
     else
     {
         $content = $uninstall->getForm();
-        $content .= $uninstall->getErrorMessage();
     }
 }
 ?>
@@ -85,10 +91,13 @@ else
     <p>
         <?php
         echo $content;
+        echo $uninstall->getErrorMessage();
 
+        // Если удаление прошло успешно
         if ($del)
         {
-            $uninstall->progress++;
+            // меняем title
+            $uninstall->title_number++;
             ?>
             <script>
                 document.getElementsByTagName("title")[0].innerHTML = "<?=$uninstall->getTitle()?>"

@@ -4,8 +4,9 @@ namespace app\classes;
 
 class Uninstall
 {
-    public $progress = 0;
-    private $lng;
+    public $title_number = 0; // это свойство проверяется в методе getTitle
+    private $lng; // берётся с сессии
+    private $error = ""; // сообщение об ошибке
     const CONFIG = "app/classes/Config.php";
 
     use Singleton;
@@ -15,11 +16,12 @@ class Uninstall
         $this->lng = ($_SESSION['language'] == null) ? "ru" : $_SESSION['language'];
     }
 
+    // Получение HTML-title
     public function getTitle()
     {
         $title = "";
 
-        switch ($this->progress)
+        switch ($this->title_number)
         {
             case 0:
                 switch ($this->lng)
@@ -28,7 +30,7 @@ class Uninstall
                         $title = "Введите пароль для подтверждения удаления";
                         break;
                     case "en":
-                        $title = "";
+                        $title = "Type password for confirm delete";
                         break;
                 }
                 break;
@@ -61,6 +63,7 @@ class Uninstall
 
     public function getForm()
     {
+        // Возвращаем HTML-код (форма с полем для пароля)
         return "
         <form method='post'>
             <label>
@@ -72,32 +75,39 @@ class Uninstall
         ";
     }
 
+    // Проверка пароля
     public function checkPassword(string $password)
     {
-        $login = new Login();
-
+        $login = new Login(); // новый объект класса Login
+        // Шифруем пароль
         $password = $login->clean_password($password);
+        // Получаем с БД всю информацию о пользователе
+        $user = mysqli_fetch_assoc($login->return_authorisation());
+        $right_password = $user['password']; // записываем пароль
 
-        $right_password = mysqli_fetch_assoc($login->return_authorisation())['password'];
-
-        $res = ($password == $right_password);
+        // Если пароли не совпадают, то меняем сообщение об ошибке
+        if (!$res = ($password == $right_password))
+        {
+            $this->error = "Вы неправильно ввели пароль. Попробуйте ещё раз";
+        }
 
         return $res;
     }
 
     public function getErrorMessage()
     {
-        return "
+        return ($this->error !== "") ? "
         <div class='alert alert-danger alert-dismissable fade show' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
                 <span aria-hidden='true'>&times;</span>
             </button>
             <h4 class='alert-heading'>Ошибка!</h4>
-            <p>Вы неправильно ввели пароль. Попробуйте ещё раз</p>
+            <p>{$this->error}</p>
         </div>
-        ";
+        " : "";
     }
 
+    // Удаление таблиц с БД и конф. файлов
     public function delete()
     {
         $res = true;
@@ -112,25 +122,22 @@ class Uninstall
         {
             if (!Db::getInstance()->sql($sql.$table['Tables_in_new_project']))
             {
+                $this->error .= "<br />Таблица {$table['Tables_in_new_project']} не удалена!";
                 $res = false;
             }
         }
 
-        $res = ($res !== false) ? $this->deleteFiles() : false;
-
-        return $res;
-    }
-
-    public function deleteFiles()
-    {
-        $res = true;
-
-        if (!unlink(self::CONFIG)
-            || !unlink("../".self::CONFIG)
-            || !unlink("../.htaccess")
-        )
+        // Если таблицы в БД удалены, то удаляем конфигурационные файлы
+        if ($res)
         {
-            $res = false;
+            if (!unlink(self::CONFIG)
+                || !unlink("../".self::CONFIG)
+                || !unlink("../.htaccess")
+            )
+            {
+                $this->error .= "<br />Файлы не удалены!";
+                $res = false;
+            }
         }
 
         return $res;

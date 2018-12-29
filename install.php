@@ -250,7 +250,10 @@ php_value register_globals Off
 php_value error_reporting 1
 
 #Включаем поддержку коротких тегов
-php_flag short_open_tag on";
+php_flag short_open_tag on
+
+#Переадресация с install.php (чтобы никто не смог переустановить)
+Redirect /install.php {$domain_name}";
 
 // создадим эти файлы
 create_db_settings_file(MYNAME, $file_contents);

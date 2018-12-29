@@ -20,8 +20,8 @@ class Login
 
         $p = trim($p);
 
-        $salt1="a153bd";
-        $salt2="b3p6ft";
+        $salt1 = "a153bd";
+        $salt2 = "b3p6ft";
         $p = md5(md5($salt1).md5($p).md5($salt2));
         $p = strrev($p);
 
