@@ -41,16 +41,16 @@
 	</head>
 <body id="top">
 <div id="content">
-<div id="head-container">
-	<div id="header">
-		<br />
-		<br />
-		<h1>
-			Система управления сайтом
-		</h1>
-		<p>
-			Версия от 12.01.2018
-		</p>
-        <!--<IMG class="header_admin" alt="" src="../upload/images/logo.png">-->
-	</div><!--header-->
-</div><!--head-container-->
+    <div id="head-container">
+        <div id="header">
+            <br />
+            <br />
+            <h1>
+                Система управления сайтом
+            </h1>
+            <p>
+                Версия от 12.01.2018
+            </p>
+            <!--<IMG class="header_admin" alt="" src="../upload/images/logo.png">-->
+        </div><!--header-->
+    </div><!--head-container-->

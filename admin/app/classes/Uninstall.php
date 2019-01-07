@@ -78,7 +78,10 @@ class Uninstall
     // Проверка пароля
     public function checkPassword(string $password)
     {
-        $login = new Login(); // новый объект класса Login
+        /**
+         * @var $login Login
+         */
+        $login = Factory::getClassInst("Login"); // объект класса Login
         // Шифруем пароль
         $password = $login->clean_password($password);
         // Получаем с БД всю информацию о пользователе

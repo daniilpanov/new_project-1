@@ -557,21 +557,20 @@ else
     $ok = false;
 }
 
-// удаляем установщик для предотвращения повторного добавления первоначальных данных
 echo "<div class='row'>
-    <div class='col-md-10'>Удаляем установщик</div>
+    <div class='col-md-10'>Создаём файл для записи ошибок</div>
     <div class='col-md-2'>OK</div>
 </div>
 <div class='jumbotron'>
     <div class='row'><div class='col-md-12'>Готово!</div></div>
     <div class='row'><div class='col-md-12'>
-        <a href=\"$domain_name\">Перейти на сайт</a>&nbsp;|&nbsp; <a href=\"{$domain_name}\admin\">Система администрирования</a>
+        <a href=\"$domain_name\">Перейти на сайт</a>&nbsp;|&nbsp;<a href=\"{$domain_name}\admin\">Система администрирования</a>
     </div>
 </div>";
-// !!!РАЗКОММЕНТИРУЙТЕ НА PRODUCTION!!!
-// Удаляем файлы установщика:
+// Удаляем скопированный файл
 unlink('app/classes/Login.php');
-/*unlink('Установка.txt');*/
+// Если не было ошибок, то создаём log-файл
+// (здесь используется как "файл-флаг", т.е. если он существует, то переадресовываем в корень)
 if ($ok)
 {
     create_settings_file("logs.txt", "Установка прошла успешно! \r\n");

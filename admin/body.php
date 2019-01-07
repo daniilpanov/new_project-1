@@ -12,9 +12,9 @@
 		<a href = "exit.php" title="Выход"><i class="icon-off icon-large"> </i></a>
 	
         <div id="date">
-		<?php
-        $day = new \app\classes\GetDay();
-        ?>
+            <?php
+            echo \app\classes\Factory::getClassInst("GetDay", false);
+            ?>
 		</div><!--date-->
 		
 	</div><!--navigation-->
@@ -300,4 +300,5 @@ HERE;
     </div><!--content-container2-->
 </div><!--content-container-->
 <div class="empty">&nbsp;</div><!--empty-->
-</div><!--content--> 
+
+</div><!--content-->

@@ -4,7 +4,6 @@ namespace app\classes;
 
 class Factory
 {
-
     /**
      * @var $instances array|object[]
      */
@@ -65,7 +64,7 @@ class Factory
         {
             $error = date("j.m.Y \a\\t G:i:s") . "\n".
                 $exception->getMessage() . "\n\n";
-            file_put_contents('logs.txt', $error,FILE_APPEND);
+            file_put_contents('../logs.txt', $error,FILE_APPEND);
         }
     }
 }

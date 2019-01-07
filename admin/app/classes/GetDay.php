@@ -16,7 +16,7 @@ class GetDay
 				10=>"октября",
 				11=>"ноября",
 				12=>"декабря"
-				);
+            );
 					
     public $day = array(
 				0=>"воскресенье",
@@ -26,10 +26,10 @@ class GetDay
 				4=>"четверг",
 				5=>"пятница",
 				6=>"суббота"
-				);
+            );
                 
     public function __construct()
     {
-        echo 'Сегодня '.date("j")." ".$this->month[date("n")]." ".date("Y")." года, ".$this->day[date("w")];
+        return 'Сегодня '.date("j")." ".$this->month[date("n")]." ".date("Y")." года, ".$this->day[date("w")];
     }
 }
