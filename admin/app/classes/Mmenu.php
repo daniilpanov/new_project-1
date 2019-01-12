@@ -6,8 +6,11 @@ class Mmenu
 	// возвращает список всех меню со всей информацией по каждому
 	function menu_pos($lng)
 	{ 
-        $sql = "SELECT * FROM menus WHERE language = '{$lng}' ORDER BY position ASC";
-        $res = \app\classes\Db::getInstance()->read($sql);// выполняем запрос
+        //$sql = "SELECT * FROM menus WHERE language = '{$lng}' ORDER BY position ASC";
+        //$res = Db::getInstance()->sql($sql);// выполняем запрос
+        $res = Db::getInstance()->read(
+            "menus", "*", false, array("language" => $lng), true, null, "position"
+        );
         return $res; // возвращаем результат
     }
 	

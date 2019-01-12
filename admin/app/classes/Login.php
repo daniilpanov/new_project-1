@@ -3,7 +3,7 @@ namespace app\classes;
 
 class Login
 {
-	function clean_login($login)
+	public function clean_login($login)
 	{
         $l = stripslashes($login);
         $l = htmlspecialchars($l);
@@ -13,7 +13,7 @@ class Login
         return $l;
 	}
 	
-	function clean_password($password)
+	public function clean_password($password)
 	{
         $p = stripslashes($password);
         $p = htmlspecialchars($p);
@@ -28,10 +28,8 @@ class Login
         return $p;
 	}
 	
-    function return_authorisation($login, $password)
+    public function return_authorisation($login, $password)
 	{
-        $sql = /** @lang MySQL */ "SELECT * FROM users WHERE login = {$login} AND password = {$password}";
-        //$res = Db::getInstance()->sql($sql);// выполняем
         $res = Db::getInstance()->read("users", "*", false, array("login" => $login, "password" => $password));
         return $res; // возвращаем результат
     }

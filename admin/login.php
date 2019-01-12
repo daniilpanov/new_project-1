@@ -62,7 +62,7 @@ else
         die("<center><img src='image/error.png' border=0><h4>Вы ввели не всю информацию, вернитесь назад и заполните все поля!</h4><br><a href='index.php'>Назад</a></center>");
     }
 
-    $check_authorisation = new \app\classes\Login();
+    $check_authorisation = \app\classes\Factory::getClassInst("Login");
 
     $login = $check_authorisation->clean_login($login);
     $password = $check_authorisation->clean_password($password);
@@ -77,7 +77,7 @@ else
 
         $_SESSION['password'] = $password;
 
-        header('Location: /');
+        header('Location: index.php');
     }
 
     else
