@@ -2,10 +2,9 @@
 session_start();
 
 
-
 if (!isset($_SESSION['login']) || !isset($_SESSION['password']))
 {
-	include ("login.php");
+	require_once "login.php";
 	exit;
 }
 else

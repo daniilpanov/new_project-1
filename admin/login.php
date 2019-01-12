@@ -59,7 +59,7 @@ else
 
     if (empty($login) || empty($password))
     {
-        exit ("<center><img src='image/error.png' border=0><h4>Вы ввели не всю информацию, вернитесь назад и заполните все поля!</h4><br><a href='index.php'>Назад</a></center>");
+        die("<center><img src='image/error.png' border=0><h4>Вы ввели не всю информацию, вернитесь назад и заполните все поля!</h4><br><a href='index.php'>Назад</a></center>");
     }
 
     $check_authorisation = new \app\classes\Login();
@@ -67,24 +67,23 @@ else
     $login = $check_authorisation->clean_login($login);
     $password = $check_authorisation->clean_password($password);
 
-    $result = $check_authorisation->return_authorisation($login);
+    $result = $check_authorisation->return_authorisation($login, $password);
 
-    $myrow = mysqli_fetch_array($result);
+    $authorized = $result->fetch();
 
-
-    if ($myrow['password']==$password && $myrow['login']==$login)
+    if ($authorized)
     {
-        $_SESSION['login']=$login;
+        $_SESSION['login'] = $login;
 
-        $_SESSION['password']=$password;
+        $_SESSION['password'] = $password;
 
-        header('Refresh: 0; URL=index.php');
+        header('Location: /');
     }
 
     else
     {
 
-        exit ("<center><img src='image/error.png' border=0><h4>Ошибка авторизации!</h4><br><a href='index.php'>Назад</a></center>");
+        die("<center><img src='image/error.png' border=0><h4>Ошибка авторизации!</h4><br><a href='index.php'>Назад</a></center>");
     }
 
 }

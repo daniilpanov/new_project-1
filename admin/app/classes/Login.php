@@ -28,10 +28,11 @@ class Login
         return $p;
 	}
 	
-    function return_authorisation()
+    function return_authorisation($login, $password)
 	{
-        $sql = /** @lang MySQL */ "SELECT * FROM users WHERE id=1";
-        $res = \app\classes\Db::getInstance()->sql($sql);// выполняем запрос
+        $sql = /** @lang MySQL */ "SELECT * FROM users WHERE login = {$login} AND password = {$password}";
+        //$res = Db::getInstance()->sql($sql);// выполняем
+        $res = Db::getInstance()->read("users", "*", false, array("login" => $login, "password" => $password));
         return $res; // возвращаем результат
     }
 }
