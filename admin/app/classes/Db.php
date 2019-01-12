@@ -143,9 +143,9 @@ class Db extends Config
         }
 
         //
-        $query .= ($order_by !== NULL) ? "ORDER BY {$order_by} {$how}" : "";
+        $query .= ($order_by !== NULL) ? " ORDER BY {$order_by} {$how}" : "";
         //
-        $query .= ($limit !== NULL) ? "LIMIT {$limit}" : "";
+        $query .= ($limit !== NULL) ? " LIMIT {$limit}" : "";
 
         // Выполняем запрос
         $STH = $this->sql($query, $tmp);

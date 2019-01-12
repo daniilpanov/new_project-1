@@ -73,9 +73,7 @@ else
 
     if ($authorized)
     {
-        $_SESSION['login'] = $login;
-
-        $_SESSION['password'] = $password;
+        $_SESSION['loged'] = $authorized['name']." ".$authorized['surname'];
 
         header('Location: index.php');
     }

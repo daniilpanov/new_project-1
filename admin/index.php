@@ -2,7 +2,7 @@
 session_start();
 
 
-if (!isset($_SESSION['login']) || !isset($_SESSION['password']))
+if (!isset($_SESSION['loged']))
 {
 	require_once "login.php";
 	exit;
@@ -20,7 +20,7 @@ else
 }
 
 // создадим основной обьект настроек
-$site_ini = new \app\classes\Msettings();
+$site_ini = \app\classes\Factory::getClassInst("Msettings");
 
 // подключаем файл со статическими языковыми константами сайта
 $lng = $site_ini->return_settings("ru");
