@@ -95,5 +95,60 @@ class Db extends Config
 
         return $STH;
     }
+
+    // получение
+    public function read($table, $items = "*", $count = FALSE, $where = NULL, $templates = TRUE, $limit = NULL, $order_by = NULL, $how = "ASC")
+    {
+        // Генерируем начальный запрос (SELECT $items FROM $table)
+        // (если надо посчитать элеементы, то "SELECT <u>COUNT($items)</u> FROM $table)
+        $query = ($count) ? "SELECT COUNT({$items}) FROM {$table}" : "SELECT {$items} FROM {$table}";
+        $tmp = array(); // объявляем массив для именованных шаблонов
+
+        // Если указано, откуда надо брать данные, то
+        if ($where !== NULL)
+        {
+            $query .= " WHERE "; // добавляем к запросу "WHERE"
+            // и если нужно применять именованные шаблоны,
+            if ($templates)
+            {
+                // перебираем $where как ключ и значение
+                foreach ($where as $index => $item)
+                {
+                    // добавляем в запрос именованные шаблоны
+                    $query .= "{$index} = :{$index} AND ";
+                    $tmp[$index] = $item; // и записываем эти именованные шаблоны в массив
+                }
+                // <u>обрезаем последнее <code>"AND "</code></u>
+                $query = substr($query, 0, -4);
+
+                // Пример такого запроса: <i>"SELECT * FROM test WHERE id = :id AND info = :info "</i>
+                // (массив с им. шаблонами) <pre>Array('id' => '1', 'info' => 'Тест', )</pre>
+            }
+            // иначе
+            else
+            {
+                // просто перебираем массив $where как ключ и значение
+                foreach ($where as $index => $item)
+                {
+                    // и вставляем в запрос
+                    $query .= "{$index} = {$item} AND ";
+                }
+                // <u>и также обрезаем последнее <code>"AND "</code></u>
+                $query = substr($query, 0, -4);
+
+                // Пример такого запроса: <i>"SELECT * FROM test WHERE id = '1' AND info = 'Тест'
+            }
+        }
+
+        //
+        $query .= ($order_by !== NULL) ? " ORDER BY {$order_by} {$how}" : "";
+        //
+        $query .= ($limit !== NULL) ? " LIMIT {$limit}" : "";
+
+        // Выполняем запрос
+        $STH = $this->sql($query, $tmp);
+        // и возвращаем результат
+        return $STH;
+    }
 }
 ?>
