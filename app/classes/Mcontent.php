@@ -3,7 +3,7 @@ namespace app\classes;
 
 class Mcontent
 {
-    function return_content($id = NULL)
+    protected function return_content($id = NULL)
 	{
         // если выбран id
 		if($id)
@@ -15,16 +15,14 @@ class Mcontent
         if(!$id)
 		{
             // проверяем язык по умолчанию
-            $id=1;
-			if($_SESSION['language']=='en')
+            $id = 1;
+			if($_SESSION['language'] == 'en')
 			{
-				$id=2;
+				$id = 2;
 			}
         }
-        $sql = /** @lang MySQL */
-            "SELECT * FROM pages WHERE id = :id AND visible = :visible LIMIT 1";
 
-        $res = Db::getInstance()->sql($sql, array("id" => $id, "visible" => "1"));// выполняем запрос
+        $res = Db::getInstance()->read("pages", "*", false, array("id" => $id, "visible" => "1"), true, "", "", "1");
         return $res;
     }
 }

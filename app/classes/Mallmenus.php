@@ -3,11 +3,10 @@ namespace app\classes;
 
 class Mallmenus
 {
-    function return_menus()
+    protected function return_menus()
 	{
-		$sql = "SELECT id, menu_name, language, visible, header_visible FROM menus WHERE visible = :vis AND language = :lng ORDER BY position"; // готовим запрос
-
-        $res = Db::getInstance()->sql($sql, array("vis" => '1', "lng" => $_SESSION['language']));// выполняем запрос
+        $res = Db::getInstance()->read("menus", "id, menu_name, language, visible, header_visible",
+            false, array("visible" => '1', "language" => $_SESSION['language']), true, "position");
         return $res; // возвращаем результат
     }
 }

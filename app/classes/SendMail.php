@@ -3,7 +3,7 @@ namespace app\classes;
 
 /**
  * @filename SendMail.php
- * набор компонентов для отправки письма
+ * Набор компонентов для отправки письма
  * @author Любомир Пона & Даниил Панов
  * @copyright 24.09.2013
  * @updated 12.12.2018
@@ -12,15 +12,15 @@ namespace app\classes;
 // класс подготовки и отправки email
 class SendMail 
 {
-	private $to; // email получателя
-    private $from; // email отправителя для ответа
-    private $mail = "office@"; // email сервера с доменным именем
-    private $phone; // номер телефона отправителя
-    private $subject; // тема письма
-    private $mess; // текст письма
-    private	$headers; // заголовки
-    private $files_size = 0; // реальный размер всех прикрепленных файлов
-    private $max_mail_size = 10000000; //максимальный размер письма
+	private $to, // email получателя
+        $from, // email отправителя для ответа
+        $mail = "office@", // email сервера с доменным именем
+        $phone, // номер телефона отправителя
+        $subject, // тема письма
+        $mess, // текст письма
+        $headers, // заголовки
+        $files_size = 0, // реальный размер всех прикрепленных файлов
+        $max_mail_size = 10000000; //максимальный размер письма
 
     // метод подготовки email
     public function __construct($from, $subject, $mess, $phone = null, $file = null)
@@ -135,9 +135,8 @@ Content-Disposition: attachment; filename=\"{$filename}\"
     // метод получения адреса почты администратора сайта
     private function getAdminEmail()
     {
-        $sql = "SELECT admin_email FROM constants WHERE language = :language";
         $result = Db::getInstance()
-            ->sql($sql, array("language" => $_SESSION['language']));
+            ->read("constants", "admin_email", false, array("language" => $_SESSION['language']));
 
         $email = $result->fetch();
         return $email['admin_email'];
@@ -146,9 +145,8 @@ Content-Disposition: attachment; filename=\"{$filename}\"
     // метод получения почты сервера домена с которого отправляем почту
     private function getServerEmail()
     {
-        $sql = "SELECT domainname FROM constants WHERE language = :language";
         $result = Db::getInstance()
-            ->sql($sql, array("language" => $_SESSION['language']));
+            ->read("constants", "domainname", false, array("language" => $_SESSION['language']));
 
         $email = $result->fetch();
         $server_email = str_replace('http://','',$email['domainname']);

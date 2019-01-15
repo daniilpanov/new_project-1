@@ -58,6 +58,7 @@ class Db extends Config
     // реализация запроса к БД
     public function sql(string $query, array $params = NULL, bool $emulate = TRUE) : \PDOStatement
     {
+        //echo $query;
         try
         {
             // если вместе с запросом был передан массив с данными
@@ -97,10 +98,14 @@ class Db extends Config
     }
 
     // получение
-    public function read($table, $items = "*", $count = FALSE, $where = NULL, $templates = TRUE, $limit = NULL, $order_by = NULL, $how = "ASC")
+    public function read(
+        string $table, string $items = "*", bool $count = FALSE,
+        array $where = NULL, bool $templates = TRUE, string $order_by = "",
+        string $how = "ASC", string $limit = ""
+    )
     {
         // Генерируем начальный запрос (SELECT $items FROM $table)
-        // (если надо посчитать элеементы, то "SELECT <u>COUNT($items)</u> FROM $table)
+        // (если надо посчитать элементы, то "SELECT <u>COUNT($items)</u> FROM $table)
         $query = ($count) ? "SELECT COUNT({$items}) FROM {$table}" : "SELECT {$items} FROM {$table}";
         $tmp = array(); // объявляем массив для именованных шаблонов
 
@@ -141,14 +146,44 @@ class Db extends Config
         }
 
         //
-        $query .= ($order_by !== NULL) ? " ORDER BY {$order_by} {$how}" : "";
+        $query .= ($order_by != "") ? " ORDER BY {$order_by} {$how}" : "";
         //
-        $query .= ($limit !== NULL) ? " LIMIT {$limit}" : "";
+        $query .= ($limit != "") ? " LIMIT {$limit}" : "";
 
         // Выполняем запрос
         $STH = $this->sql($query, $tmp);
         // и возвращаем результат
         return $STH;
+    }
+
+    // добавление
+    public function create(string $table, array $data, bool $timestamps = FALSE)
+    {
+        $sql = "INSERT INTO {$table} (";
+        $values = ") VALUES(";
+
+        foreach ($data as $k => $v)
+        {
+            $sql .= "{$k}, ";
+            $values .= ":{$k}, ";
+        }
+
+        if ($timestamps)
+        {
+            $sql .= 'created, ';
+            $values .= ':created, ';
+            $data['created'] = time();
+        }
+
+        $sql = substr($sql,0,-2);
+        $values = substr($values, 0, -2);
+
+        $sql .= $values.")";
+
+        if($this->sql($sql, $data))
+        {
+            echo "Данные были успешно добавлены";
+        }
     }
 }
 ?>
