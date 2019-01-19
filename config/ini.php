@@ -10,7 +10,16 @@ spl_autoload_register(function ($name)
     // конвертируем полный путь в пространстве имён с \ в /
     $name = str_replace('\\', '/', $name);
 
-    require_once($name.'.php');
+    try
+    {
+        require_once($name.'.php');
+    }
+    catch (\Exception $exception)
+    {
+        $error = date("j.m.Y \a\\t G:i:s") . "\nInvalid class name '{$name}'\n\n";
+        echo $exception->getMessage() . "\n\n";
+        file_put_contents('logs.txt', $error,FILE_APPEND);
+    }
 });
 
 if (!file_exists("logs.txt"))

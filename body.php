@@ -86,6 +86,8 @@ use app\classes\Factory;
         <div class="col-md-9">
             <div id="content_zone"><?php
 
+                $test = Factory::getClassInst("TEST");
+
                 // если от пользователя получен запрос на поиск по сайту
                 if($_POST['search'])
                 {

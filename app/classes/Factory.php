@@ -24,39 +24,30 @@ class Factory
         // Пробуем создать объект
         try
         {
-            // Если класс не существует, то
-            if (!class_exists($class_full_name))
+            if ($singleton)
             {
-                // генерируем исключение
-                throw new \Exception("Invalid class name");
+                // По принципу Singleton с доп. функциями
+                // Если нам надо создать указанный объект, то
+                if (!isset(self::$instances[$class]))
+                {
+                    // присваеваем элементу статического массива объект нужного класса
+                    self::$instances[$class] = new $class_full_name();
+                }
+
+                // И в любом случае, мы возвращаем элемент массива с указанным ключом
+                return self::$instances[$class];
             }
             else
             {
-                if ($singleton)
+                // Если конструктор класса принимает аргументы
+                if ($construct_args)
                 {
-                    // По принципу Singleton с доп. функциями
-                    // Если нам надо создать указанный объект, то
-                    if (!isset(self::$instances[$class]))
-                    {
-                        // присваеваем элементу статического массива объект нужного класса
-                        self::$instances[$class] = new $class_full_name();
-                    }
-
-                    // И в любом случае, мы возвращаем элемент массива с указанным ключом
-                    return self::$instances[$class];
+                    $obj = new \ReflectionClass($class_full_name);
+                    return $obj->newInstanceArgs($construct_args);
                 }
                 else
                 {
-                    // Если конструктор класса принимает аргументы
-                    if ($construct_args)
-                    {
-                        $obj = new \ReflectionClass($class_full_name);
-                        return $obj->newInstanceArgs($construct_args);
-                    }
-                    else
-                    {
-                        return new $class_full_name();
-                    }
+                    return new $class_full_name();
                 }
             }
         }
