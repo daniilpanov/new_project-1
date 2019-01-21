@@ -25,11 +25,11 @@
 		<div id="content-container3"><?php
 
 		// создаем новые обьекты
-        $vcreateedit = new \app\classes\CcreateEdit(); // для работы со страницами
-		$allmenus = new \app\classes\Cmenu(); // для работы с меню
-		$alllanguages = new \app\classes\Clanguages(); // для работы с языками
-		$settings = new \app\classes\Csettings(); // для работы с настройками сайта
-        $reviews = new \app\classes\Creview(); // для работы с отзывами
+        $vcreateedit = \app\classes\Factory::getClassInst("CcreateEdit"); // для работы со страницами
+		$allmenus = \app\classes\Factory::getClassInst("Cmenu"); // для работы с меню
+		$alllanguages = \app\classes\Factory::getClassInst("Clanguages"); // для работы с языками
+		$settings = \app\classes\Factory::getClassInst("Csettings"); // для работы с настройками сайта
+        $reviews = \app\classes\Factory::getClassInst("Creview"); // для работы с отзывами
 
         // Маршрутизатор
         // Если данные пришли с формы
